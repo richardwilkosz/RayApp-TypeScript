@@ -14,15 +14,13 @@
   </v-col>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    placeholderSrc: require("../../assets/movie-placeholder.jpg"),
-  }),
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
-  props: {
-    title: String,
-    src: String,
-  },
-};
+@Component
+export default class UnownedMovie extends Vue {
+  @Prop(String) title!: Array<string>
+  @Prop(String) src!: Array<string>
+  placeholderSrc = require("../../assets/movie-placeholder.jpg");
+}
 </script>

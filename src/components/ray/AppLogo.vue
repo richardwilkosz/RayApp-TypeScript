@@ -8,3 +8,10 @@
     <v-toolbar-title class="mx-3">Ray</v-toolbar-title>
   </div>
 </template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class AppLogo extends Vue { }
+</script>

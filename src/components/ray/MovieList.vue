@@ -97,24 +97,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Vue, Component, Prop, Ref } from 'vue-property-decorator'
 import axios from "axios";
 import Constants from "../../assets/Constants";
 
-// import OwnedMovie from "./OwnedMovie.vue";
-// import UnownedMovie from "./UnownedMovie.vue";
-// import MovieDetails from "./MovieDetails.vue";
+import OwnedMovie from "./OwnedMovie.vue";
+import UnownedMovie from "./UnownedMovie.vue";
+import MovieDetails from "./MovieDetails.vue";
 
 import { Movie } from "../../models/movie.model";
 import { Genre } from "../../models/genre.model";
 
 @Component
 export default class MovieList extends Vue {
-  // components: {
-  //   OwnedMovie,
-  //   UnownedMovie,
-  //   MovieDetails,
-  // },
+  @Ref() readonly OwnedMovie!: OwnedMovie
+  @Ref() readonly UnownedMovie!: UnownedMovie
+  @Ref() readonly MovieDetails!: MovieDetails
 
   @Prop(Array) ownedMovies!: Array<Movie>
   @Prop(Array) unownedMovies!: Array<Movie>

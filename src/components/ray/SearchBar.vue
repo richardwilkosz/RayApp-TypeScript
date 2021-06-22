@@ -11,11 +11,11 @@
     append-icon=""
     :search-input.sync="searchInput"
     :items="suggestedMovieTitles"
-    @keydown.enter="endSearch()"
     @click:prepend-inner="endSearch()"
     @click:clear="clearSearch()"
     @update:search-input="updateSearch()"
   >
+  <!-- Reimplement '@keydown.enter="endSearch()"' in TypeScript -->
     <template v-slot:prepend-item>
       <v-subheader>SUGGESTED SEARCHES</v-subheader>
     </template>
@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import _ from "lodash";
-import Constants from "../../assets/Constants.js";
+import Constants from "../../assets/Constants";
 
 @Component
 export default class SearchBar extends Vue {
@@ -39,16 +39,18 @@ export default class SearchBar extends Vue {
       // this.emitSearch();
     }
 
-    // emitSearch: _.debounce(function () {
-    //   this.$emit("update-search", this.searchInput ? this.searchInput : Constants.SEARCH_ALL);
-    // }, 750)
-
-    // Workaround since comboboxes don't close on enter
-    endSearch(): void {
-      //this.$children[0].blur();
+    emitSearch(): void {
+      _.debounce(() => {
+        this.$emit("update-search", this.searchInput ? this.searchInput : Constants.SEARCH_ALL);
+      }, 750)
     }
 
-    clearSearch: function () {
+    // Workaround since comboboxes don't close on enter
+    // endSearch(): void {
+    //   this.$children[0].blur();
+    // }
+
+    clearSearch(): void {
       this.$emit("update-search", Constants.SEARCH_ALL);
     }
 }

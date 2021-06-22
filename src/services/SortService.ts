@@ -1,4 +1,4 @@
-import Constants from "../assets/Constants.js";
+import Constants from "../assets/Constants";
 import { Movie } from "../models/movie.model";
 
 export default {

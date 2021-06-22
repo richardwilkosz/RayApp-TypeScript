@@ -37,19 +37,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Vue, Component, Ref } from 'vue-property-decorator'
 import axios from "axios";
 import Constants from "../../assets/Constants";
-import SortService from "../../services/SortService.js";
-import FilterService from "../../services/FilterService.js";
+import SortService from "../../services/SortService";
+import FilterService from "../../services/FilterService";
+
+import AppBar from "../components/ray/AppBar.vue";
+import SortFilterMenu from "../components/ray/SortFilterMenu.vue";
+import MovieList from "../components/ray/MovieList.vue";
+import AppFooter from "../components/ray/AppFooter.vue";
 
 import { Movie } from "../../models/movie.model";
 import { Genre } from "../../models/genre.model";
-
-// import AppBar from "../components/ray/AppBar.vue";
-// import SortFilterMenu from "../components/ray/SortFilterMenu.vue";
-// import MovieList from "../components/ray/MovieList.vue";
-// import AppFooter from "../components/ray/AppFooter.vue";
 
 @Component
 export default class RayApp extends Vue {
@@ -74,12 +74,10 @@ export default class RayApp extends Vue {
   filterGenreIds: Array<number> = [Constants.FILTER_DEFAULT];
   genres: Array<Genre> = [];
 
-  // components: Object = {
-  //   AppBar,
-  //   SortFilterMenu,
-  //   MovieList,
-  //   AppFooter,
-  // };
+  @Ref() readonly AppBar!: AppBar
+  @Ref() readonly SortFilterMenu!: SortFilterMenu
+  @Ref() readonly MovieList!: MovieList
+  @Ref() readonly AppFooter!: AppFooter
 
   created(): void {
     document.title = "Ray"

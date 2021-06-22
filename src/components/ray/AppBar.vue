@@ -35,21 +35,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Ref } from 'vue-property-decorator'
 
-// import AppLogo from "./AppLogo";
-// import SearchBar from "./SearchBar";
-// import SortFilterMenu from "./SortFilterMenu";
+import AppLogo from "./AppLogo.vue";
+import SearchBar from "./SearchBar.vue";
+import SortFilterMenu from "./SortFilterMenu.vue";
 
 import { Genre } from "../../models/genre.model";
 
 @Component
 export default class AppBar extends Vue {
-  // components: {
-  //   AppLogo,
-  //   SearchBar,
-  //   SortFilterMenu,
-  // },
+  @Ref() readonly AppLogo!: AppLogo
+  @Ref() readonly SearchBar!: SearchBar
+  @Ref() readonly SortFilterMenu!: SortFilterMenu
 
   @Prop(Array) genres!: Array<Genre>
   @Prop(Array) ownedMovieTitles!: Array<string>

@@ -26,64 +26,61 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import Constants from "../../assets/Constants.js";
+import { Genre } from "../../models/genre.model";
+import { SortMenuItem } from "../../models/sortMenuItem.model";
 
-export default {
-  props: {
-    genres: Array,
-  },
+@Component
+export default class SortFilterMenu extends Vue {
+  @Prop(Array) genres!: Array<Genre>
 
-  data: () => ({
-    allGenreName: "Include All Genres",
-    genresSelected: [Constants.FILTER_DEFAULT],
+  allGenreName = "Include All Genres";
+  genresSelected: Array<number> = [Constants.FILTER_DEFAULT];
 
-    sortSelect: { text: "Alphabetical", value: Constants.SORT_ALPHA },
-    sortItems: [
-      { text: "Alphabetical", value: Constants.SORT_ALPHA },
-      { text: "Shortest", value: Constants.SORT_SHORT },
-      { text: "Longest", value: Constants.SORT_LONG },
-      { text: "Newest", value: Constants.SORT_NEW },
-      { text: "Oldest", value: Constants.SORT_OLD },
-    ],
-  }),
+  sortSelect: SortMenuItem = { text: "Alphabetical", value: Constants.SORT_ALPHA };
+  sortItems: Array<SortMenuItem> = [
+    { text: "Alphabetical", value: Constants.SORT_ALPHA },
+    { text: "Shortest", value: Constants.SORT_SHORT },
+    { text: "Longest", value: Constants.SORT_LONG },
+    { text: "Newest", value: Constants.SORT_NEW },
+    { text: "Oldest", value: Constants.SORT_OLD },
+  ];
 
-  methods: {
-    selectSort: function (select) {
-      this.$emit("update-sort", select);
-    },
+  selectSort(select: number): void {
+    this.$emit("update-sort", select);
+  }
 
-    selectGenre: function () {
-      let vm = this;
-      let filters = [];
-      this.setIncludeAll();
-      this.genresSelected.forEach((index) => filters.push(vm.genres[index].id));
-      vm.$emit("update-filter", filters);
-    },
+  selectGenre(): void {
+    let filters: Array<number> = [];
+    this.setIncludeAll();
+    this.genresSelected.forEach((index) => filters.push(this.genres[index].id));
+    this.$emit("update-filter", filters);
+  }
 
-    setIncludeAll: function () {
-      const isAll = (index) => index === Constants.FILTER_DEFAULT;
-      const setToAll = () => (this.genresSelected = [Constants.FILTER_DEFAULT]);
+  setIncludeAll(): void {
+    const isAll = (index: number) => index === Constants.FILTER_DEFAULT;
+    const setToAll = () => (this.genresSelected = [Constants.FILTER_DEFAULT]);
 
-      // In the case of no filters, default back to All
-      if (!this.genresSelected || this.genresSelected.length === 0) {
+    // In the case of no filters, default back to All
+    if (!this.genresSelected || this.genresSelected.length === 0) {
+      setToAll();
+    } else {
+      let lastSelectedIndex = this.genresSelected.slice(-1)[0];
+
+      // Either "Include All" is selected, or some subset of genres
+      if (isAll(lastSelectedIndex)) {
         setToAll();
-      } else {
-        let lastSelectedIndex = this.genresSelected.slice(-1)[0];
-
-        // Either "Include All" is selected, or some subset of genres
-        if (isAll(lastSelectedIndex)) {
-          setToAll();
-        }
-        else {
-          this.genresSelected = this.genresSelected.filter(
-            (index) => !isAll(index)
-          );
-        }
       }
-    },
-  },
-};
+      else {
+        this.genresSelected = this.genresSelected.filter(
+          (index) => !isAll(index)
+        );
+      }
+    }
+  }
+}
 </script>
 
 <style>
