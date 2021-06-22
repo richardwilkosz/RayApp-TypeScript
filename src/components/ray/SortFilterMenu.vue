@@ -55,7 +55,7 @@ export default {
 
     selectGenre: function () {
       let vm = this;
-      let filters = new Array();
+      let filters = [];
       this.setIncludeAll();
       this.genresSelected.forEach((index) => filters.push(vm.genres[index].id));
       vm.$emit("update-filter", filters);

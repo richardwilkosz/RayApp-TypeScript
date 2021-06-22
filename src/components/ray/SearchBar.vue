@@ -29,7 +29,7 @@ import Constants from "../../assets/Constants.js";
 export default {
   data: () => ({
     searchInput: "",
-    suggestedMovieTitles: new Array(),
+    suggestedMovieTitles: [],
   }),
 
   props: {
@@ -39,7 +39,7 @@ export default {
   methods: {
     updateSearch: function() {
       // Only show suggestions when there's actual input
-      this.suggestedMovieTitles = this.searchInput ? this.ownedMovieTitles : new Array();
+      this.suggestedMovieTitles = this.searchInput ? this.ownedMovieTitles : [];
       this.emitSearch();
     },
 

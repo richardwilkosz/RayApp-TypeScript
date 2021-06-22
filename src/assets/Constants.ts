@@ -25,7 +25,7 @@ export default {
     SEARCH_QUERY: SEARCH_QUERY,
     IMAGE_QUERY: IMAGE_QUERY,
     OWNED_LIST_QUERY: OWNED_LIST_QUERY,
-    DETAILS_QUERY: function (id) { return DETAILS_QUERY.concat(id).concat('?api_key=').concat(API_KEY); },
+    DETAILS_QUERY: function (id: number) { return DETAILS_QUERY.concat(id.toString()).concat('?api_key=').concat(API_KEY); },
     BACKDROP_PATH: BACKDROP_PATH,
     GENRES_QUERY: GENRES_QUERY,
 

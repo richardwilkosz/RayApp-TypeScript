@@ -1,7 +1,8 @@
 import Constants from "../assets/Constants.js";
+import { Movie } from "../models/movie.model";
 
 export default {
-  sortMovieArray: function (movieArray, sortBy) {
+  sortMovieArray: function (movieArray: Array<Movie>, sortBy: number): void {
     switch (sortBy) {
       case Constants.SORT_ALPHA:
         return this.sortAlphabetical(movieArray);
@@ -18,7 +19,7 @@ export default {
     }
   },
 
-  sortAlphabetical(movieArray) {
+  sortAlphabetical(movieArray: Array<Movie>) {
     movieArray.sort(function (a, b) {
       let titleA = a.title.replace("The ", "").toUpperCase();
       let titleB = b.title.replace("The ", "").toUpperCase();
@@ -26,35 +27,35 @@ export default {
     });
   },
 
-  sortByRuntime(movieArray, ascOrDesc) {
+  sortByRuntime(movieArray: Array<Movie>, ascOrDesc: string) {
     let sortMethod;
 
     if (ascOrDesc === Constants.SORT_ASC) {
-      sortMethod = function (arr) {
-        arr.sort((a, b) => b.runtime - a.runtime);
+      sortMethod = function (arr: Array<Movie>) {
+          arr.sort((a, b) => (b.runtime ? b.runtime : 0) - (a.runtime ? a.runtime : 0));
       };
     } else {
-      sortMethod = function (arr) {
-        arr.sort((a, b) => a.runtime - b.runtime);
+      sortMethod = function (arr: Array<Movie>) {
+        arr.sort((a, b) => (a.runtime ? a.runtime : 0) - (b.runtime ? b.runtime : 0));
       };
     }
 
     sortMethod(movieArray);
   },
 
-  sortByReleaseYear(movieArray, ascOrDesc) {
+  sortByReleaseYear(movieArray: Array<Movie>, ascOrDesc: string) {
     let sortMethod;
 
     if (ascOrDesc === Constants.SORT_ASC) {
-      sortMethod = function (arr) {
+      sortMethod = function (arr: Array<Movie>) {
         arr.sort(
-          (a, b) => new Date(b.release_date) - new Date(a.release_date)
+          (a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime()
         );
       };
     } else {
-      sortMethod = function (arr) {
+      sortMethod = function (arr: Array<Movie>) {
         arr.sort(
-          (a, b) => new Date(a.release_date) - new Date(b.release_date)
+          (a, b) => new Date(a.release_date).getTime() - new Date(b.release_date).getTime()
         );
       };
     }

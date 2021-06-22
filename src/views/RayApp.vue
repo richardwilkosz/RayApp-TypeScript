@@ -6,7 +6,7 @@
       @update-filter="updateFilterGenres"
       @menu-view-all="queryAllOwned"
       :genres="genres"
-      :ownedMovieTitles="getOwnedMovieTitles"
+      :ownedMovieTitles="ownedMovieTitles"
     />
     <v-main>
       <v-container fluid>
@@ -37,167 +37,172 @@
 </template>
 
 <script lang="ts">
+import Vue from "vue";
+import Component from "vue-class-component";
 import axios from "axios";
 import Constants from "../assets/Constants.js";
 import SortService from "../services/SortService.js";
 import FilterService from "../services/FilterService.js";
 
-import AppBar from "../components/ray/AppBar";
-import SortFilterMenu from "../components/ray/SortFilterMenu";
-import MovieList from "../components/ray/MovieList";
-import AppFooter from "../components/ray/AppFooter";
+import { Movie } from "../models/movie.model";
+import { Genre } from "../models/genre.model";
 
+// import AppBar from "../components/ray/AppBar.vue";
+// import SortFilterMenu from "../components/ray/SortFilterMenu.vue";
+// import MovieList from "../components/ray/MovieList.vue";
+// import AppFooter from "../components/ray/AppFooter.vue";
+
+@Component
 export default class RayApp extends Vue {
-  id: "Ray",
-  data: function(): {
-    return {
-    // Search
-    searchInput: "",
-    isLoading: true,
+  /*
+    Properties
+  */
+  name = "Ray";
 
-    // API consumption
-    ownedMovies: [],
-    ownedResults: [],
-    unownedResults: [],
+  // Search
+  searchInput = "";
+  isLoading = true;
+  ownedMovieTitles: Array<string> = [];
 
-    // Sort/filter
-    sortBy: Constants.SORT_ALPHA,
-    isSortingByYear: false,
-    filterGenreIds: [Constants.FILTER_DEFAULT],
-    genres: [],
-    }
-  },
+  // API consumption
+  ownedMovies: Array<Movie> = [];
+  ownedResults: Array<Movie> = [];
+  unownedResults: Array<Movie> = [];
 
-  components: {
-    AppBar,
-    SortFilterMenu,
-    MovieList,
-    AppFooter,
-  },
+  // Sort/filter
+  sortBy: number = Constants.SORT_ALPHA;
+  isSortingByYear = false;
+  filterGenreIds: Array<number> = [Constants.FILTER_DEFAULT];
+  genres: Array<Genre> = [];
 
-  created() {
+  // components: Object = {
+  //   AppBar,
+  //   SortFilterMenu,
+  //   MovieList,
+  //   AppFooter,
+  // };
+
+  created(): void {
     document.title = "Ray"
+    this.$vuetify.theme.dark = true;
 
-    let vm = this;
-    vm.$vuetify.theme.dark = true;
 
     // Get list of owned movies
     axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
       let ownedResults = response.data.items;
-      let ownedDetailPromises = [];
+      let ownedDetailPromises: Array<any> = [];
 
       // Get extra details of each owned movie, e.g. runtime
-      ownedResults.forEach((result) =>
-        ownedDetailPromises.push(vm.getOwnedDetails(result.id))
+      ownedResults.forEach((result: Movie) =>
+        ownedDetailPromises.push(this.getOwnedDetails(result.id))
       );
 
       // Get list of genres
       axios.get(Constants.GENRES_QUERY).then((response) => {
-        vm.genres = response.data.genres;
-        vm.genres.unshift({
+        this.genres = response.data.genres;
+        this.genres.unshift({
           id: Constants.FILTER_DEFAULT,
           name: "Include All Genres",
         });
       });
 
-      // Finalize list after API calls are complete
-      Promise.all(ownedDetailPromises).then(function (results) {
-        results.forEach((result) => vm.ownedMovies.push(result.data));
-        vm.queryAllOwned();
-        vm.isLoading = false;
+      // Finalize lists after API calls are complete
+      Promise.all(ownedDetailPromises).then((results) => {        
+        // Finalize search results
+        results.forEach((result) => this.ownedMovies.push(this.apiCallToModel(result.data)));
+        this.queryAllOwned();
+        this.isLoading = false;
+
+        // Finalize search autocomplete
+        let titles = new Array<string>();
+        this.ownedMovies.forEach((ownedMovie: Movie) => titles.push(ownedMovie.title));
+        this.ownedMovieTitles = titles;
       });
     });
-  },
+  }
 
-  computed: {
-    getOwnedMovieTitles() {
-      let titles = new Array();
-      this.ownedMovies.forEach((ownedMovie) => titles.push(ownedMovie.title));
-      return titles;
-    },
-  },
+  /*
+    Search methods
+  */
+  search(searchInput: string): void {
+    // Prevent duplicate searches
+    if (searchInput !== this.searchInput) {
+      this.searchInput = searchInput;
 
-  methods: {
-    /*
-      Search methods
-    */
-    search(searchInput) {
-      // Prevent duplicate searches
-      if (searchInput !== this.searchInput) {
-        this.searchInput = searchInput;
+      // Clear previous results
+      this.ownedResults = [];
+      this.unownedResults = [];
 
-        // Clear previous results
-        this.ownedResults = new Array();
-        this.unownedResults = new Array();
-
-        if (searchInput === Constants.SEARCH_ALL) {
-          this.queryAllOwned();
-        } else {
-          this.queryFromString(searchInput);
-        }
+      if (searchInput === Constants.SEARCH_ALL) {
+        this.queryAllOwned();
+      } else {
+        this.queryFromString(searchInput);
       }
-    },
+    }
+  }
 
-    queryAllOwned() {
-      this.ownedResults = this.ownedMovies;
-    },
+  queryAllOwned(): void {
+    this.ownedResults = this.ownedMovies;
+  }
 
-    queryFromString(searchInput) {
-      let vm = this;
-      vm.isLoading = true;
+  queryFromString(searchInput: string): void {
+    this.isLoading = true;
 
-      // Query list of owned movies created at init
-      vm.ownedResults = vm.ownedMovies.filter((ownedMovie) =>
-        ownedMovie.title.toUpperCase().includes(searchInput.toUpperCase())
+    // Query list of owned movies created at init
+    this.ownedResults = this.ownedMovies.filter((ownedMovie: Movie) =>
+      ownedMovie.title.toUpperCase().includes(searchInput.toUpperCase())
+    );
+
+    // Query API for unowned movies that match too, preventing duplicates
+    axios.get(Constants.SEARCH_QUERY + searchInput).then((response) => {
+      let allResults = response.data.results;
+      this.unownedResults = allResults.filter(
+        (result: Movie) =>
+          !this.ownedResults.find((ownedResult: Movie) => ownedResult.id === result.id)
       );
 
-      // Query API for unowned movies that match too, preventing duplicates
-      axios.get(Constants.SEARCH_QUERY + searchInput).then((response) => {
-        let allResults = response.data.results;
-        vm.unownedResults = allResults.filter(
-          (result) =>
-            !vm.ownedResults.find((ownedResult) => ownedResult.id === result.id)
-        );
+      this.isLoading = false;
+    });
+  }
 
-        vm.isLoading = false;
-      });
-    },
+  getOwnedDetails(id: number): Movie {
+    return this.apiCallToModel(axios.get(Constants.DETAILS_QUERY(id)));
+  }
 
-    getOwnedDetails(id) {
-      return axios.get(Constants.DETAILS_QUERY(id));
-    },
+  apiCallToModel(a: any): Movie {
+    return new Movie(a.id, a.title, a.release_date, a.description, a.poster_path, a.runtime, a.genres, a.genre_ids);
+  }
 
-    /*
-      Sort/Filter methods
-    */
-    sortFilterResults: function (resultsArray) {
-      let sortedFilteredArray = resultsArray.slice(); // Copy by value, not by reference
-      sortedFilteredArray = this.filterResults(sortedFilteredArray);
-      this.sortResults(sortedFilteredArray);
-      return sortedFilteredArray;
-    },
+  /*
+    Sort/Filter methods
+  */
+  sortFilterResults(resultsArray: Array<Movie>): Array<Movie> {
+    let sortedFilteredArray = resultsArray.slice(); // Copy by value, not by reference
+    sortedFilteredArray = this.filterResults(sortedFilteredArray);
+    this.sortResults(sortedFilteredArray);
+    return sortedFilteredArray;
+  }
 
-    updateSortBy(sortBy) {
-      this.sortBy = sortBy;
+  updateSortBy(sortBy: number): void {
+    this.sortBy = sortBy;
 
-      this.isSortingByYear =
-        this.sortBy === Constants.SORT_NEW ||
-        this.sortBy === Constants.SORT_OLD;
-    },
+    this.isSortingByYear =
+      this.sortBy === Constants.SORT_NEW ||
+      this.sortBy === Constants.SORT_OLD;
+  }
 
-    updateFilterGenres(filterGenreIds) {
-      this.filterGenreIds = filterGenreIds;
-    },
+  updateFilterGenres(filterGenreIds: Array<number>): void {
+    this.filterGenreIds = filterGenreIds;
+  }
 
-    sortResults: function (resultsArray) {
-      return SortService.sortMovieArray(resultsArray, this.sortBy);
-    },
+  sortResults(resultsArray: Array<Movie>): void {
+    return SortService.sortMovieArray(resultsArray, this.sortBy);
+  }
 
-    filterResults: function (resultsArray) {
-      return FilterService.filterMovieArray(resultsArray, this.filterGenreIds);
-    },
-  },
-});
+  filterResults(resultsArray: Array<Movie>): Array<Movie> {
+    return FilterService.filterMovieArray(resultsArray, this.filterGenreIds);
+  }
+}
 </script>
 
 <style lang="scss">

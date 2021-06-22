@@ -1,7 +1,8 @@
 import Constants from "../assets/Constants.js";
+import { Movie } from "../models/movie.model";
 
 export default {
-  filterMovieArray: function (movieArray, filterGenreIds) {
+  filterMovieArray(movieArray: Array<Movie>, filterGenreIds: Array<number>): Array<Movie> {
     if (filterGenreIds.includes(Constants.FILTER_DEFAULT)) {
       return movieArray;
     }
@@ -10,11 +11,11 @@ export default {
         // Account for the fact that TMDB sets genres to different property names based on query
         // Owned movies: Array<object> genres
         if (movie.genres) {
-          return movie.genres.some(genre => filterGenreIds.includes(genre.id));
+          return movie.genres ? movie.genres.some(genre => filterGenreIds.includes(genre.id)) : [];
         }
         // Unowned movies: Array<number> genre_ids
         else {
-          return movie.genre_ids.some(genreId => filterGenreIds.includes(genreId));
+          return movie.genre_ids ? movie.genre_ids.some(genreId => filterGenreIds.includes(genreId)) : [];
         }
       });
     }
