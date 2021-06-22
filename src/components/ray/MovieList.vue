@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import axios from "axios";
 import Constants from "../../assets/Constants";
 
@@ -160,6 +160,11 @@ export default class MovieList extends Vue {
 
       this.dialogOpen = true;
     });
+  }
+
+  apiCallToModel(a: any): Movie {
+    console.log(a);
+    return new Movie(a.id, a.title, a.release_date, a.description, a.runtime, a.poster_path, a.backdrop_path, a.genres, a.genre_ids);
   }
 }
 </script>
