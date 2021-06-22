@@ -165,8 +165,8 @@ export default class RayApp extends Vue {
     });
   }
 
-  getOwnedDetails(id: number): Movie {
-    return this.apiCallToModel(axios.get(Constants.DETAILS_QUERY(id)));
+  getOwnedDetails(id: number): any {
+    return axios.get(Constants.DETAILS_QUERY(id));
   }
 
   apiCallToModel(a: any): Movie {
