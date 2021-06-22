@@ -28,6 +28,6 @@ import { ButtonLinkData } from "../../models/buttonLinkData.model";
 
 @Component
 export default class ButtonLink extends Vue {
-  @Prop(ButtonLinkData) data!: ButtonLinkData
+  @Prop(Object) data!: ButtonLinkData
 }
 </script>

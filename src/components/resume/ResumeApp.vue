@@ -51,8 +51,8 @@ export default class ResumeApp extends Vue {
 
   viewportSize = "";
   yearsExperience: number =
-    Math.floor(new Date().getTime() - new Date(2018, 4, 1).getTime()) /
-    (1000 * 3600 * 24 * 365);
+    Math.floor((new Date().getTime() - new Date(2018, 4, 1).getTime()) /
+    (1000 * 3600 * 24 * 365));
   sections: Array<ResumeSection> = [
     {
       id: 0,

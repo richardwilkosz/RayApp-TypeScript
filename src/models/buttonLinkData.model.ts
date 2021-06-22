@@ -3,5 +3,6 @@ export interface ButtonLinkData {
   label: string,
   color: string,
   href: string,
-  isRouterLink: boolean,
+  icon?: string,
+  isRouterLink?: boolean,
 }
