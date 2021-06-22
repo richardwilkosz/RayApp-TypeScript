@@ -21,8 +21,8 @@ export default {
 
   sortAlphabetical(movieArray: Array<Movie>) {
     movieArray.sort(function (a, b) {
-      let titleA = a.title.replace("The ", "").toUpperCase();
-      let titleB = b.title.replace("The ", "").toUpperCase();
+      const titleA = a.title.replace("The ", "").toUpperCase();
+      const titleB = b.title.replace("The ", "").toUpperCase();
       return titleA > titleB ? 1 : titleB > titleA ? -1 : 0;
     });
   },
