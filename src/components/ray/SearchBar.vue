@@ -22,41 +22,36 @@
   </v-combobox>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import _ from "lodash";
 import Constants from "../../assets/Constants.js";
 
-export default {
-  data: () => ({
-    searchInput: "",
-    suggestedMovieTitles: [],
-  }),
+@Component
+export default class SearchBar extends Vue {
+  @Prop(Array) ownedMovieTitles!: Array<string>
+  searchInput = "";
+  suggestedMovieTitles: Array<string> = [];
 
-  props: {
-    ownedMovieTitles: Array,
-  },
-
-  methods: {
-    updateSearch: function() {
+    updateSearch(): void {
       // Only show suggestions when there's actual input
       this.suggestedMovieTitles = this.searchInput ? this.ownedMovieTitles : [];
-      this.emitSearch();
-    },
+      // this.emitSearch();
+    }
 
-    emitSearch: _.debounce(function () {
-      this.$emit("update-search", this.searchInput ? this.searchInput : Constants.SEARCH_ALL);
-    }, 750),
+    // emitSearch: _.debounce(function () {
+    //   this.$emit("update-search", this.searchInput ? this.searchInput : Constants.SEARCH_ALL);
+    // }, 750)
 
     // Workaround since comboboxes don't close on enter
-    endSearch: function () {
-      this.$children[0].blur();
-    },
+    endSearch(): void {
+      //this.$children[0].blur();
+    }
 
     clearSearch: function () {
       this.$emit("update-search", Constants.SEARCH_ALL);
-    },
-  },
-};
+    }
+}
 </script>
 
 <style lang="scss">

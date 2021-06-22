@@ -34,39 +34,39 @@
   </v-app-bar>
 </template>
 
-<script>
-import AppLogo from "./AppLogo";
-import SearchBar from "./SearchBar";
-import SortFilterMenu from "./SortFilterMenu";
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
-export default {
-  components: {
-    AppLogo,
-    SearchBar,
-    SortFilterMenu,
-  },
+// import AppLogo from "./AppLogo";
+// import SearchBar from "./SearchBar";
+// import SortFilterMenu from "./SortFilterMenu";
 
-  props: {
-    genres: Array,
-    ownedMovieTitles: Array,
-  },
+import { Genre } from "../../models/genre.model";
 
-  data: () => ({
-    isSearchingMobile: false,
-  }),
+@Component
+export default class AppBar extends Vue {
+  // components: {
+  //   AppLogo,
+  //   SearchBar,
+  //   SortFilterMenu,
+  // },
 
-  methods: {
-    updateSearch: function (e) {
-      this.$emit("update-search", e);
-    },
-    updateSort: function (e) {
-      this.$emit("update-sort", e);
-    },
-    updateFilter: function (e) {
-      this.$emit("update-filter", e);
-    },
-  },
-};
+  @Prop(Array) genres!: Array<Genre>
+  @Prop(Array) ownedMovieTitles!: Array<string>
+  isSearchingMobile = false;
+
+  updateSearch(e: string): void {
+    this.$emit("update-search", e);
+  }
+
+  updateSort(e: string): void {
+    this.$emit("update-sort", e);
+  }
+
+  updateFilter(e: string): void {
+    this.$emit("update-filter", e);
+  }
+}
 </script>
 
 <style>

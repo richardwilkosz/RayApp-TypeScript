@@ -11,7 +11,6 @@
       </div>
     </template>
     <template v-else>
-
       <!-- Owned Movie Results -->
       <template v-if="getOwnedMoviesCount() > 0">
         <v-row dense>
@@ -97,71 +96,69 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import axios from "axios";
+import Constants from "../../assets/Constants";
 
-import Constants from "../../assets/Constants.js";
-import OwnedMovie from "./OwnedMovie";
-import UnownedMovie from "./UnownedMovie";
-import MovieDetails from "./MovieDetails";
+// import OwnedMovie from "./OwnedMovie.vue";
+// import UnownedMovie from "./UnownedMovie.vue";
+// import MovieDetails from "./MovieDetails.vue";
 
-export default {
-  components: {
-    OwnedMovie,
-    UnownedMovie,
-    MovieDetails,
-  },
+import { Movie } from "../../models/movie.model";
+import { Genre } from "../../models/genre.model";
 
-  props: {
-    ownedMovies: Array,
-    unownedMovies: Array,
-    genres: Array,
-    isLoading: Boolean,
-    isSortingByYear: Boolean,
-  },
+@Component
+export default class MovieList extends Vue {
+  // components: {
+  //   OwnedMovie,
+  //   UnownedMovie,
+  //   MovieDetails,
+  // },
 
-  data: () => ({
-    dialogOpen: false,
-    openedMovie: new Object(),
-    openedMovieImagePath: "",
-  }),
+  @Prop(Array) ownedMovies!: Array<Movie>
+  @Prop(Array) unownedMovies!: Array<Movie>
+  @Prop(Array) genres!: Array<Genre>
+  @Prop(Boolean) isLoading!: boolean
+  @Prop(Boolean) isSortingByYear!: boolean
+  dialogOpen = false;
+  openedMovie: Movie = this.ownedMovies[0];
+  openedMovieImagePath = "";
 
-  methods: {
-    getPosterImage: function (movie) {
-      return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "";
-    },
-    getReleaseYear: function (movie) {
-      return movie.release_date ? movie.release_date.substring(0, 4) : "";
-    },
-    getRuntimeInHours: function (movie) {
-      return movie.runtime
-        ? Math.floor(movie.runtime / 60) + "h " + (movie.runtime % 60) + "m"
-        : "";
-    },
+  getPosterImage(movie: Movie): string {
+    return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "";
+  }
+  getReleaseYear(movie: Movie): string {
+    return movie.release_date ? movie.release_date.substring(0, 4) : "";
+  }
+  getRuntimeInHours(movie: Movie): string {
+    return movie.runtime
+      ? Math.floor(movie.runtime / 60) + "h " + (movie.runtime % 60) + "m"
+      : "";
+  }
 
-    getOwnedMoviesCount: function () {
-      return this.ownedMovies.length;
-    },
-    getUnownedMoviesCount: function () {
-      return this.unownedMovies.length;
-    },
+  getOwnedMoviesCount(): number {
+    return this.ownedMovies.length;
+  }
+  getUnownedMoviesCount(): number {
+    return this.unownedMovies.length;
+  }
 
-    openDialog: function (id) {
-      let detailsQuery = Constants.DETAILS_QUERY(id);
+  openDialog(id: number): void {
+    let detailsQuery = Constants.DETAILS_QUERY(id);
 
-      axios.get(detailsQuery).then((response) => {
-        this.openedMovie = response.data;
+    axios.get(detailsQuery).then((response) => {
+      this.openedMovie = response.data;
 
-        if (this.openedMovie.backdrop_path) {
-          this.openedMovieImagePath =
-            Constants.BACKDROP_PATH + this.openedMovie.backdrop_path;
-        } else {
-          this.openedMovieImagePath = "";
-        }
+      if (this.openedMovie.backdrop_path) {
+        this.openedMovieImagePath =
+          Constants.BACKDROP_PATH + this.openedMovie.backdrop_path;
+      } else {
+        this.openedMovieImagePath = "";
+      }
 
-        this.dialogOpen = true;
-      });
-    },
-  },
-};
+      this.dialogOpen = true;
+    });
+  }
+}
 </script>

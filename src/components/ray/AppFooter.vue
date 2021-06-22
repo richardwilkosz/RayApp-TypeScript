@@ -40,42 +40,44 @@
   </v-footer>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    techStack: [
-      {
-        id: 0,
-        imgSrc: "logo-vue.png",
-        label:
-          'JavaScript Framework:<br><a href="https://vuejs.org/" target="_blank">Vue.js</a>',
-      },
-      {
-        id: 1,
-        imgSrc: "logo-vuetify.svg",
-        label:
-          'Vue UI Library:<br><a href="https://vuetifyjs.com/" target="_blank">Vuetify</a>',
-      },
-      {
-        id: 2,
-        imgSrc: "logo-freepik.png",
-        label:
-          '<div>Manta Ray and Flaticon Brand icon<br>made by <a href="https://www.flaticon.com/authors/freepik" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" target="_blank" title="Flaticon">www.flaticon.com</a></div>',
-      },
-      {
-        id: 3,
-        imgSrc: "logo-tmdb.svg",
-        label:
-          'Data Source API:<br><a href="https://www.themoviedb.org/" target="_blank">The Movie Database</a>',
-      },
-      {
-        id: 4,
-        imgSrc: "logo-firebase.png",
-        label:
-          'Backend as a Service:<br><a href="https://firebase.google.com/" target="_blank">Google Firebase</a>',
-        width: 95,
-      },
-    ],
-  }),
-};
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import { Tech } from "../../models/tech.model";
+
+@Component
+export default class AppFooter extends Vue {
+  techStack: Array<Tech> = [
+    {
+      id: 0,
+      imgSrc: "logo-vue.png",
+      label:
+        'JavaScript Framework:<br><a href="https://vuejs.org/" target="_blank">Vue.js</a>',
+    },
+    {
+      id: 1,
+      imgSrc: "logo-vuetify.svg",
+      label:
+        'Vue UI Library:<br><a href="https://vuetifyjs.com/" target="_blank">Vuetify</a>',
+    },
+    {
+      id: 2,
+      imgSrc: "logo-freepik.png",
+      label:
+        '<div>Manta Ray and Flaticon Brand icon<br>made by <a href="https://www.flaticon.com/authors/freepik" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" target="_blank" title="Flaticon">www.flaticon.com</a></div>',
+    },
+    {
+      id: 3,
+      imgSrc: "logo-tmdb.svg",
+      label:
+        'Data Source API:<br><a href="https://www.themoviedb.org/" target="_blank">The Movie Database</a>',
+    },
+    {
+      id: 4,
+      imgSrc: "logo-firebase.png",
+      label:
+        'Backend as a Service:<br><a href="https://firebase.google.com/" target="_blank">Google Firebase</a>',
+      width: 95,
+    },
+  ];
+}
 </script>

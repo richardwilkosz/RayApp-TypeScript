@@ -32,29 +32,30 @@
   </v-dialog>
 </template>
 
-<script>
-export default {
-  props: {
-    movie: Object,
-    dialogOpen: Boolean,
-    imagePath: String,
-  },
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Movie } from "../../models/movie.model";
 
-  methods: {
-    closeDialog: function () {
-      this.$emit("close-dialog");
-    },
+@Component
+export default class MovieDetails extends Vue {
+  @Prop(Movie) movie!: Movie
+  @Prop(Boolean) dialogOpen!: boolean
+  @Prop(String) imagePath!: string
 
-    // As long as $parent is referenced, MovieDetails must be a child of MovieList
-    getReleaseYear: function (movie) {
-      return this.$parent.getReleaseYear(movie);
-    },
-    getRuntimeInHours: function (movie) {
-      let runtime = this.$parent.getRuntimeInHours(movie);
-      return runtime ? ", " + runtime : "";
-    },
-  },
-};
+  closeDialog(): void {
+    this.$emit("close-dialog");
+  }
+
+  getReleaseYear(movie: Movie): string {
+    return movie.release_date ? movie.release_date.substring(0, 4) : "";
+  }
+
+  getRuntimeInHours(movie: Movie): string {
+    return movie.runtime
+      ? Math.floor(movie.runtime / 60) + "h " + (movie.runtime % 60) + "m"
+      : "";
+  }
+}
 </script>
 
 <style>

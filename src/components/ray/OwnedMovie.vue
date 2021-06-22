@@ -32,23 +32,23 @@
   </v-card>
 </template>
 
-<script>
-export default {
-  props: {
-    title: String,
-    src: String,
-    releaseYear: String,
-    runtime: String,
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
-    // With certain viewports, where only runtime or release year can fit,
-    // show runtime unless sorting on release year
-    isSortingByYear: Boolean,
-  },
+@Component
+export default class OwnedMovie extends Vue {
+  @Prop(String) title!: string
+  @Prop(String) src!: string
+  @Prop(String) releaseYear!: string
+  @Prop(String) runtime!: string
 
-  computed: {
-    lazySrc: function() {
+  // With certain viewports, where only runtime or release year can fit,
+  // show runtime unless sorting on release year
+  @Prop(Boolean) isSortingByYear!: boolean
+
+  // This format is for Computed() properties
+  get lazySrc(): string {
       return this.src.replace('/w500/', '/w200/');
-    }
   }
-};
+}
 </script>
