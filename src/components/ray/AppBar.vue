@@ -43,12 +43,15 @@ import SortFilterMenu from "./SortFilterMenu.vue";
 
 import { Genre } from "../../models/genre.model";
 
-@Component
-export default class AppBar extends Vue {
-  @Ref() readonly AppLogo!: AppLogo
-  @Ref() readonly SearchBar!: SearchBar
-  @Ref() readonly SortFilterMenu!: SortFilterMenu
+@Component({
+  components: {
+    AppLogo,
+    SearchBar,
+    SortFilterMenu,
+  }
+})
 
+export default class AppBar extends Vue {
   @Prop(Array) genres!: Array<Genre>
   @Prop(Array) ownedMovieTitles!: Array<string>
   isSearchingMobile = false;

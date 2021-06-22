@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import Constants from "../../assets/Constants.js";
+import Constants from "../../assets/Constants";
 import { Genre } from "../../models/genre.model";
 import { SortMenuItem } from "../../models/sortMenuItem.model";
 

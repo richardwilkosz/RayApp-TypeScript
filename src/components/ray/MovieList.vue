@@ -108,12 +108,15 @@ import MovieDetails from "./MovieDetails.vue";
 import { Movie } from "../../models/movie.model";
 import { Genre } from "../../models/genre.model";
 
-@Component
-export default class MovieList extends Vue {
-  @Ref() readonly OwnedMovie!: OwnedMovie
-  @Ref() readonly UnownedMovie!: UnownedMovie
-  @Ref() readonly MovieDetails!: MovieDetails
+@Component({
+  components: {
+    OwnedMovie,
+    UnownedMovie,
+    MovieDetails,
+  }
+})
 
+export default class MovieList extends Vue {
   @Prop(Array) ownedMovies!: Array<Movie>
   @Prop(Array) unownedMovies!: Array<Movie>
   @Prop(Array) genres!: Array<Genre>
