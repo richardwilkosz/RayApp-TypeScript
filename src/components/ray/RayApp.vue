@@ -64,7 +64,7 @@ export default class RayApp extends Vue {
   /*
     Properties
   */
-  name = "Ray";
+  name = "RayApp";
 
   // Search
   searchInput = "";

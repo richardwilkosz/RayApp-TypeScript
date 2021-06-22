@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
+import ResumeApp from '../components/resume/ResumeApp.vue'
 import RayApp from '../components/ray/RayApp.vue'
 
 Vue.use(VueRouter)
@@ -7,6 +8,11 @@ Vue.use(VueRouter)
 const routes: Array<RouteConfig> = [
   {
     path: '/',
+    name: 'ResumeApp',
+    component: ResumeApp
+  },
+  {
+    path: '/ray',
     name: 'RayApp',
     component: RayApp
   },
