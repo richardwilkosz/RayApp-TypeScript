@@ -37,21 +37,29 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 import axios from "axios";
 import Constants from "../../assets/Constants";
 import SortService from "../../services/SortService";
 import FilterService from "../../services/FilterService";
 
-import AppBar from "../components/ray/AppBar.vue";
-import SortFilterMenu from "../components/ray/SortFilterMenu.vue";
-import MovieList from "../components/ray/MovieList.vue";
-import AppFooter from "../components/ray/AppFooter.vue";
+import AppBar from "./AppBar.vue";
+import SortFilterMenu from "./SortFilterMenu.vue";
+import MovieList from "./MovieList.vue";
+import AppFooter from "./AppFooter.vue";
 
 import { Movie } from "../../models/movie.model";
 import { Genre } from "../../models/genre.model";
 
-@Component
+@Component({
+  components: {
+    AppBar,
+    SortFilterMenu,
+    MovieList,
+    AppFooter,
+  }
+})
+
 export default class RayApp extends Vue {
   /*
     Properties
@@ -73,11 +81,6 @@ export default class RayApp extends Vue {
   isSortingByYear = false;
   filterGenreIds: Array<number> = [Constants.FILTER_DEFAULT];
   genres: Array<Genre> = [];
-
-  @Ref() readonly AppBar!: AppBar
-  @Ref() readonly SortFilterMenu!: SortFilterMenu
-  @Ref() readonly MovieList!: MovieList
-  @Ref() readonly AppFooter!: AppFooter
 
   created(): void {
     document.title = "Ray"
