@@ -10,7 +10,7 @@
         ></v-img>
       </v-col>
       <v-col cols="12">
-        <strong>Photography Credits:</strong><br>
+        <strong>Photography Credits</strong><br>
         Smartphone: Copper and Wild<br>
         Mailbox: Mikaela Wiedenhoff
       </v-col>
