@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop } from "vue-property-decorator";
 import axios from "axios";
 import Constants from "../../assets/Constants";
 
@@ -113,18 +113,22 @@ import { Genre } from "../../models/genre.model";
     OwnedMovie,
     UnownedMovie,
     MovieDetails,
-  }
+  },
 })
-
 export default class MovieList extends Vue {
-  @Prop(Array) ownedMovies!: Array<Movie>
-  @Prop(Array) unownedMovies!: Array<Movie>
-  @Prop(Array) genres!: Array<Genre>
-  @Prop(Boolean) isLoading!: boolean
-  @Prop(Boolean) isSortingByYear!: boolean
+  @Prop(Array) ownedMovies!: Array<Movie>;
+  @Prop(Array) unownedMovies!: Array<Movie>;
+  @Prop(Array) genres!: Array<Genre>;
+  @Prop(Boolean) isLoading!: boolean;
+  @Prop(Boolean) isSortingByYear!: boolean;
   dialogOpen = false;
-  openedMovie: Movie = this.ownedMovies[0];
+  openedMovie?: Movie = undefined;
   openedMovieImagePath = "";
+
+  created(): void {
+    this.openedMovie = Constants.MOVIE_DETAILS_DEFAULT;
+    this.openedMovieImagePath = Constants.MOVIE_DETAILS_DEFAULT_IMAGE
+  }
 
   getPosterImage(movie: Movie): string {
     return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "";
@@ -163,7 +167,17 @@ export default class MovieList extends Vue {
   }
 
   apiCallToModel(a: any): Movie {
-    return new Movie(a.id, a.title, a.release_date, a.overview, a.runtime, a.poster_path, a.backdrop_path, a.genres, a.genre_ids);
+    return new Movie(
+      a.id,
+      a.title,
+      a.release_date,
+      a.overview,
+      a.runtime,
+      a.poster_path,
+      a.backdrop_path,
+      a.genres,
+      a.genre_ids
+    );
   }
 }
 </script>
