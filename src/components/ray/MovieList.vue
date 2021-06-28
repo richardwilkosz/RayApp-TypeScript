@@ -153,7 +153,7 @@ export default class MovieList extends Vue {
     let detailsQuery = Constants.DETAILS_QUERY(id);
 
     axios.get(detailsQuery).then((response) => {
-      this.openedMovie = this.apiCallToModel(response.data);
+      this.openedMovie = new Movie(response.data);
 
       if (this.openedMovie.backdrop_path) {
         this.openedMovieImagePath =
@@ -166,18 +166,18 @@ export default class MovieList extends Vue {
     });
   }
 
-  apiCallToModel(a: any): Movie {
-    return new Movie(
-      a.id,
-      a.title,
-      a.release_date,
-      a.overview,
-      a.runtime,
-      a.poster_path,
-      a.backdrop_path,
-      a.genres,
-      a.genre_ids
-    );
-  }
+  // apiCallToModel(a: any): Movie {
+  //   return new Movie(
+  //     a.id,
+  //     a.title,
+  //     a.release_date,
+  //     a.overview,
+  //     a.runtime,
+  //     a.poster_path,
+  //     a.backdrop_path,
+  //     a.genres,
+  //     a.genre_ids
+  //   );
+  // }
 }
 </script>

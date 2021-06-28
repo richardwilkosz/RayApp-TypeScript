@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from "vue-property-decorator";
 import axios from "axios";
 import Constants from "../../assets/Constants";
 import SortService from "../../services/SortService";
@@ -57,9 +57,8 @@ import { Genre } from "../../models/genre.model";
     SortFilterMenu,
     MovieList,
     AppFooter,
-  }
+  },
 })
-
 export default class RayApp extends Vue {
   /*
     Properties
@@ -83,9 +82,8 @@ export default class RayApp extends Vue {
   genres: Array<Genre> = [];
 
   created(): void {
-    document.title = "Ray"
+    document.title = "Ray";
     this.$vuetify.theme.dark = true;
-
 
     // Get list of owned movies
     axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
@@ -107,15 +105,19 @@ export default class RayApp extends Vue {
       });
 
       // Finalize lists after API calls are complete
-      Promise.all(ownedDetailPromises).then((results) => {        
+      Promise.all(ownedDetailPromises).then((results) => {
         // Finalize search results
-        results.forEach((result) => this.ownedMovies.push(this.apiCallToModel(result.data)));
+        results.forEach((result) =>
+          this.ownedMovies.push(new Movie(result.data))
+        );
         this.queryAllOwned();
         this.isLoading = false;
 
         // Finalize search autocomplete
         let titles = new Array<string>();
-        this.ownedMovies.forEach((ownedMovie: Movie) => titles.push(ownedMovie.title));
+        this.ownedMovies.forEach((ownedMovie: Movie) =>
+          titles.push(ownedMovie.title)
+        );
         this.ownedMovieTitles = titles;
       });
     });
@@ -158,7 +160,9 @@ export default class RayApp extends Vue {
       let allResults = response.data.results;
       this.unownedResults = allResults.filter(
         (result: Movie) =>
-          !this.ownedResults.find((ownedResult: Movie) => ownedResult.id === result.id)
+          !this.ownedResults.find(
+            (ownedResult: Movie) => ownedResult.id === result.id
+          )
       );
 
       this.isLoading = false;
@@ -169,9 +173,19 @@ export default class RayApp extends Vue {
     return axios.get(Constants.DETAILS_QUERY(id));
   }
 
-  apiCallToModel(a: any): Movie {
-    return new Movie(a.id, a.title, a.release_date, a.overview, a.runtime, a.poster_path, a.backdrop_path, a.genres, a.genre_ids);
-  }
+  // apiCallToModel(a: any): Movie {
+  //   return new Movie(
+  //     a.id,
+  //     a.title,
+  //     a.release_date,
+  //     a.overview,
+  //     a.runtime,
+  //     a.poster_path,
+  //     a.backdrop_path,
+  //     a.genres,
+  //     a.genre_ids
+  //   );
+  // }
 
   /*
     Sort/Filter methods
@@ -187,8 +201,7 @@ export default class RayApp extends Vue {
     this.sortBy = sortBy;
 
     this.isSortingByYear =
-      this.sortBy === Constants.SORT_NEW ||
-      this.sortBy === Constants.SORT_OLD;
+      this.sortBy === Constants.SORT_NEW || this.sortBy === Constants.SORT_OLD;
   }
 
   updateFilterGenres(filterGenreIds: Array<number>): void {

@@ -23,7 +23,7 @@ const SORT_DESC = 'desc';
 const FILTER_DEFAULT = 0;
 
 const MOVIE_DETAILS_DEFAULT_GENRES: Array<Genre> = [ { id: 878, name: "Science Fiction" }, { id: 18, name: "Drama" }, { id: 10749, name: "Romance" } ];
-const MOVIE_DETAILS_DEFAULT: Movie = new Movie(38, "Eternal Sunshine of the Spotless Mind", "2004-03-19", "Joel Barish, heartbroken that his girlfriend underwent a procedure to erase him from her memory, decides to do the same. However, as he watches his memories of her fade away, he realises that he still loves her, and may be too late to correct his mistake.", 108, "/5VwDe3FE46fWhOfjQ5aC4ryELF8.jpg", "/jzZcW65MZQfAgvbEoX8EWCvlxpk.jpg", MOVIE_DETAILS_DEFAULT_GENRES)
+const MOVIE_DETAILS_DEFAULT: Movie = new Movie({ id: 38, title: "Eternal Sunshine of the Spotless Mind", release_date: "2004-03-19", overview: "Joel Barish, heartbroken that his girlfriend underwent a procedure to erase him from her memory, decides to do the same. However, as he watches his memories of her fade away, he realises that he still loves her, and may be too late to correct his mistake.", runtime: 108, poster_path: "/5VwDe3FE46fWhOfjQ5aC4ryELF8.jpg", backdrop_path: "/jzZcW65MZQfAgvbEoX8EWCvlxpk.jpg", genres: MOVIE_DETAILS_DEFAULT_GENRES });
 const MOVIE_DETAILS_DEFAULT_IMAGE = "https://image.tmdb.org/t/p/w500/jzZcW65MZQfAgvbEoX8EWCvlxpk.jpg";
 
 export default {
