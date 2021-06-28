@@ -60,9 +60,10 @@ export default class ResumeApp extends Vue {
       img: "resume-portrait.jpg",
       body: `<strong>Software Engineer with ${this.yearsExperience}+ years of 
                 experience</strong> writing production-level code. Specializes 
-                in user-centered front ends, but delivers clean and reusable 
-                full-stack code. Has demonstrated leadership and communication 
-                skills by serving as a team Scrum Master and mentoring 7+ interns.`,
+                in user-centered front end development, but delivers clean and 
+                reusable full-stack code. Has demonstrated leadership and 
+                communication skills by serving as team Scrum Master and mentoring 
+                7 interns over the past year.`,
       buttons: [
         {
           id: 0,
