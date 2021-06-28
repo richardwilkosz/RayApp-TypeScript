@@ -4,7 +4,7 @@ export class Movie {
   id: number;
   title: string;
   release_date: string;
-  description: string;
+  overview: string;
   runtime?: number;
   poster_path?: string;
   backdrop_path?: string;
@@ -13,11 +13,11 @@ export class Movie {
   genres?: Array<Genre>      // Owned movies: Array<object> genres
   genre_ids?: Array<number>  // Unowned movies: Array<number> genre_ids
 
-  constructor(id: number, title: string, release_date: string, description: string, runtime?: number, poster_path?: string, backdrop_path?: string, genres?: Array<Genre>, genre_ids?: Array<number>) {
+  constructor(id: number, title: string, release_date: string, overview: string, runtime?: number, poster_path?: string, backdrop_path?: string, genres?: Array<Genre>, genre_ids?: Array<number>) {
     this.id = id;
     this.title = title;
     this.release_date = release_date;
-    this.description = description;
+    this.overview = overview;
 
     // Optional
     this.runtime = runtime;

@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Ref } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import AppLogo from "./AppLogo.vue";
 import SearchBar from "./SearchBar.vue";

@@ -170,7 +170,7 @@ export default class RayApp extends Vue {
   }
 
   apiCallToModel(a: any): Movie {
-    return new Movie(a.id, a.title, a.release_date, a.description, a.runtime, a.poster_path, a.backdrop_path, a.genres, a.genre_ids);
+    return new Movie(a.id, a.title, a.release_date, a.overview, a.runtime, a.poster_path, a.backdrop_path, a.genres, a.genre_ids);
   }
 
   /*
