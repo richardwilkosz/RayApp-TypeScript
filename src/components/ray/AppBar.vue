@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Emit } from "vue-property-decorator";
 
 import AppLogo from "./AppLogo.vue";
 import SearchBar from "./SearchBar.vue";
@@ -48,24 +48,26 @@ import { Genre } from "../../models/genre.model";
     AppLogo,
     SearchBar,
     SortFilterMenu,
-  }
+  },
 })
-
 export default class AppBar extends Vue {
-  @Prop(Array) genres!: Array<Genre>
-  @Prop(Array) ownedMovieTitles!: Array<string>
+  @Prop(Array) genres!: Array<Genre>;
+  @Prop(Array) ownedMovieTitles!: Array<string>;
   isSearchingMobile = false;
 
-  updateSearch(e: string): void {
-    this.$emit("update-search", e);
+  @Emit("update-search")
+  updateSearch(e: string): string {
+    return e;
   }
 
-  updateSort(e: string): void {
-    this.$emit("update-sort", e);
+  @Emit("update-sort")
+  updateSort(e: string): string {
+    return e;
   }
 
-  updateFilter(e: string): void {
-    this.$emit("update-filter", e);
+  @Emit("update-filter")
+  updateFilter(e: string): string {
+    return e;
   }
 }
 </script>

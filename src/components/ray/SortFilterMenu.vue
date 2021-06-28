@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Emit } from 'vue-property-decorator'
 import Constants from "../../assets/Constants";
 import { Genre } from "../../models/genre.model";
 import { SortMenuItem } from "../../models/sortMenuItem.model";
@@ -48,15 +48,17 @@ export default class SortFilterMenu extends Vue {
     { text: "Oldest", value: Constants.SORT_OLD },
   ];
 
-  selectSort(select: number): void {
-    this.$emit("update-sort", select);
+  @Emit("update-sort")
+  selectSort(select: number): number {
+    return select;
   }
 
-  selectGenre(): void {
+  @Emit("update-filter")
+  selectGenre(): Array<number> {
     let filters: Array<number> = [];
     this.setIncludeAll();
     this.genresSelected.forEach((index) => filters.push(this.genres[index].id));
-    this.$emit("update-filter", filters);
+    return filters;
   }
 
   setIncludeAll(): void {

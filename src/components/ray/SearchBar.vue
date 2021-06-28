@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Emit } from "vue-property-decorator";
 import { Debounce } from "vue-debounce-decorator";
 import Constants from "../../assets/Constants";
 
@@ -44,16 +44,15 @@ export default class SearchBar extends Vue {
     this.emitSearch();
   }
 
+  @Emit("update-search")
   @Debounce(750)
-  emitSearch(): void {
-    this.$emit(
-      "update-search",
-      this.searchInput ? this.searchInput : Constants.SEARCH_ALL
-    );
+  emitSearch(): string {
+    return this.searchInput ? this.searchInput : Constants.SEARCH_ALL;
   }
 
-  clearSearch(): void {
-    this.$emit("update-search", Constants.SEARCH_ALL);
+  @Emit("update-search")
+  clearSearch(): string {
+    return Constants.SEARCH_ALL;
   }
 }
 </script>

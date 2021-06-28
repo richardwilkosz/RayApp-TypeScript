@@ -15,8 +15,7 @@
       <v-card-subtitle class="pb-4">
         {{ getReleaseYear(movie) }}{{ getRuntimeInHours(movie) }}
       </v-card-subtitle>
-      <v-img v-if="imagePath" :src="imagePath">
-      </v-img>
+      <v-img v-if="imagePath" :src="imagePath"> </v-img>
       <v-card-text>
         <div class="primary--text font-weight-bold mt-3 mb-2">
           <span v-for="(genre, index) in movie.genres" :key="genre.id">
@@ -33,17 +32,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Emit } from "vue-property-decorator";
 import { Movie } from "../../models/movie.model";
 
 @Component
 export default class MovieDetails extends Vue {
-  @Prop(Movie) movie!: Movie
-  @Prop(Boolean) dialogOpen!: boolean
-  @Prop(String) imagePath!: string
+  @Prop(Movie) movie!: Movie;
+  @Prop(Boolean) dialogOpen!: boolean;
+  @Prop(String) imagePath!: string;
 
-  closeDialog(): void {
-    this.$emit("close-dialog");
+  @Emit("close-dialog")
+  closeDialog(): string {
+    return "close-dialog";
   }
 
   getReleaseYear(movie: Movie): string {
@@ -59,7 +59,7 @@ export default class MovieDetails extends Vue {
 </script>
 
 <style>
-.v-card__title{
+.v-card__title {
   word-break: normal !important;
   line-height: normal !important;
 }
