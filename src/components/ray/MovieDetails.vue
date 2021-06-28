@@ -47,7 +47,7 @@ export default class MovieDetails extends Vue {
   }
 
   getReleaseYear(movie: Movie): string {
-    return movie.release_date + ", ";
+    return movie.release_date.substring(0, 4) + ", ";
   }
 
   getRuntimeInHours(movie: Movie): string {

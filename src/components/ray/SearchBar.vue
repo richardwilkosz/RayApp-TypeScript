@@ -11,7 +11,6 @@
     append-icon=""
     :search-input.sync="searchInput"
     :items="suggestedMovieTitles"
-    @click:prepend-inner="endSearch()"
     @click:clear="clearSearch()"
     @update:search-input="updateSearch()"
   >
@@ -24,7 +23,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import _ from "lodash";
+import { Debounce } from 'vue-debounce-decorator'
 import Constants from "../../assets/Constants";
 
 @Component
@@ -33,26 +32,20 @@ export default class SearchBar extends Vue {
   searchInput = "";
   suggestedMovieTitles: Array<string> = [];
 
-    updateSearch(): void {
-      // Only show suggestions when there's actual input
-      this.suggestedMovieTitles = this.searchInput ? this.ownedMovieTitles : [];
-      // this.emitSearch();
-    }
+  updateSearch(): void {
+    // Only show suggestions when there's actual input
+    this.suggestedMovieTitles = this.searchInput ? this.ownedMovieTitles : [];
+    this.emitSearch();
+  }
 
-    emitSearch(): void {
-      _.debounce(() => {
-        this.$emit("update-search", this.searchInput ? this.searchInput : Constants.SEARCH_ALL);
-      }, 750)
-    }
+  @Debounce(750)
+  emitSearch(): void {
+    this.$emit("update-search", this.searchInput ? this.searchInput : Constants.SEARCH_ALL);
+  }
 
-    // Workaround since comboboxes don't close on enter
-    // endSearch(): void {
-    //   this.$children[0].blur();
-    // }
-
-    clearSearch(): void {
-      this.$emit("update-search", Constants.SEARCH_ALL);
-    }
+  clearSearch(): void {
+    this.$emit("update-search", Constants.SEARCH_ALL);
+  }
 }
 </script>
 
