@@ -9,26 +9,32 @@
     placeholder="Search movies"
     prepend-inner-icon="mdi-magnify"
     append-icon=""
+    clear-icon="mdi-trash-can-outline"
     :search-input.sync="searchInput"
     :items="suggestedMovieTitles"
     @click:clear="clearSearch()"
     @update:search-input="updateSearch()"
+    :menu-props="{ closeOnContentClick: true }"
   >
-  <!-- Reimplement '@keydown.enter="endSearch()"' in TypeScript -->
+    <!-- Reimplement '@keydown.enter="endSearch()"' in TypeScript -->
     <template v-slot:prepend-item>
-      <v-subheader>SUGGESTED SEARCHES</v-subheader>
+      <v-subheader>
+        <span>SUGGESTED SEARCHES</span>
+        <v-spacer></v-spacer>
+        <v-icon>mdi-close</v-icon>
+      </v-subheader>
     </template>
   </v-combobox>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import { Debounce } from 'vue-debounce-decorator'
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { Debounce } from "vue-debounce-decorator";
 import Constants from "../../assets/Constants";
 
 @Component
 export default class SearchBar extends Vue {
-  @Prop(Array) ownedMovieTitles!: Array<string>
+  @Prop(Array) ownedMovieTitles!: Array<string>;
   searchInput = "";
   suggestedMovieTitles: Array<string> = [];
 
@@ -40,7 +46,10 @@ export default class SearchBar extends Vue {
 
   @Debounce(750)
   emitSearch(): void {
-    this.$emit("update-search", this.searchInput ? this.searchInput : Constants.SEARCH_ALL);
+    this.$emit(
+      "update-search",
+      this.searchInput ? this.searchInput : Constants.SEARCH_ALL
+    );
   }
 
   clearSearch(): void {
