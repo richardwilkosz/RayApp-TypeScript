@@ -11,6 +11,7 @@
       </v-col>
       <v-col cols="12">
         <strong>Photography Credits</strong><br>
+        Portrait: <a href="https://www.kellyjacobiphotography.com/portraitshome" target="_blank" class="white--text">Kelly Jacobi Photography</a><br>
         Smartphone: Copper and Wild<br>
         Mailbox: Mikaela Wiedenhoff
       </v-col>
